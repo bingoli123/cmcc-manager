@@ -1,0 +1,324 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmcc.dao.user.MenuDao">
+    <resultMap id="BaseResultMap" type="com.cmcc.model.user.Menu">
+        <id column="MENU_ID" jdbcType="BIGINT" property="menuId" />
+        <result column="PARENT_ID" jdbcType="BIGINT" property="parentId" />
+        <result column="MENU_NAME" jdbcType="VARCHAR" property="menuName" />
+        <result column="URL" jdbcType="VARCHAR" property="url" />
+        <result column="PERMS" jdbcType="VARCHAR" property="perms" />
+        <result column="ICON" jdbcType="VARCHAR" property="icon" />
+        <result column="TYPE" jdbcType="VARCHAR" property="type" />
+        <result column="ORDER_NUM" jdbcType="BIGINT" property="orderNum" />
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+        <result column="CREATOR" jdbcType="BIGINT" property="creator" />
+        <result column="MODIFY_TIME" jdbcType="TIMESTAMP" property="modifyTime" />
+        <result column="MODIFIER" jdbcType="BIGINT" property="modifier" />
+        <result column="DELETE_FLAG" jdbcType="VARCHAR" property="deleteFlag" />
+    </resultMap>
+    <sql id="Base_Column_List">
+    MENU_ID, PARENT_ID, MENU_NAME, URL, PERMS, ICON, `TYPE`, ORDER_NUM, CREATE_TIME,
+    CREATOR, MODIFY_TIME, MODIFIER, DELETE_FLAG
+  </sql>
+    <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List" />
+        from base_menu
+        where MENU_ID = #{menuId,jdbcType=BIGINT}
+    </select>
+
+    <select id="findAllMenus" parameterType="com.cmcc.model.user.Menu" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from base_menu
+        <where>
+            <if test="menuId != null">
+                and MENU_ID = #{menuId}
+            </if>
+            <if test="parentId != null">
+                and PARENT_ID = #{parentId}
+            </if>
+            <if test="menuName != null and menuName != ''">
+                and MENU_NAME = #{menuName}
+            </if>
+            <if test="url != null and url != ''">
+                and URL = #{url}
+            </if>
+            <if test="perms != null and perms != ''">
+                and PERMS = #{perms}
+            </if>
+            <if test="icon != null and icon != ''">
+                and ICON = #{icon}
+            </if>
+            <if test="type != null and type != ''">
+                and TYPE = #{type}
+            </if>
+            <if test="orderNum != null">
+                and ORDER_NUM = #{orderNum}
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime}
+            </if>
+            <if test="creator != null">
+                and CREATOR = #{creator}
+            </if>
+            <if test="modifyTime != null">
+                and MODIFY_TIME = #{modifyTime}
+            </if>
+            <if test="modifier != null">
+                and MODIFIER = #{modifier}
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                and DELETE_FLAG = #{deleteFlag}
+            </if>
+        </where>
+        order by ORDER_NUM asc
+    </select>
+
+    <!--查询-->
+    <select id="queryMenuByUserId" resultMap="BaseResultMap">
+   SELECT
+	m.MENU_ID,
+	m.PARENT_ID,
+	m.MENU_NAME,
+	m.URL,
+	m.PERMS,
+	m.ICON,
+	m.TYPE,
+	m.ORDER_NUM,
+	m.CREATE_TIME,
+	m.CREATOR,
+	m.MODIFY_TIME,
+	m.MODIFIER
+FROM
+	base_menu m
+	LEFT JOIN base_role_menu_relation e ON m.MENU_ID = e.MENU_ID
+	AND e.DELETE_FLAG = 'N'
+	LEFT JOIN base_user_role_relation r ON e.ROLE_ID = r.ROLE_ID
+	AND r.DELETE_FLAG = 'N'
+	LEFT JOIN base_user u ON r.USER_ID = u.ID
+	AND u.DELETE_FLAG = 'N'
+	WHERE u.ID = #{userId} AND m.DELETE_FLAG = 'N'
+    </select>
+
+    <!--查询-->
+    <select id="queryMenuByRoleId" resultMap="BaseResultMap">
+   SELECT
+	m.MENU_ID,
+	m.PARENT_ID,
+	m.MENU_NAME,
+	m.URL,
+	m.PERMS,
+	m.ICON,
+	m.TYPE,
+	m.ORDER_NUM,
+	m.CREATE_TIME,
+	m.CREATOR,
+	m.MODIFY_TIME,
+	m.MODIFIER
+FROM
+	base_menu m
+	LEFT JOIN base_role_menu_relation e ON m.MENU_ID = e.MENU_ID
+	AND e.DELETE_FLAG = 'N'
+	WHERE e.ROLE_ID = #{roleId} AND m.DELETE_FLAG = 'N'
+    </select>
+
+    <!--查询-->
+    <select id="gerUserMenuNotButton" resultMap="BaseResultMap">
+   SELECT
+	m.MENU_ID,
+	m.PARENT_ID,
+	m.MENU_NAME,
+	m.URL,
+	m.PERMS,
+	m.ICON,
+	m.TYPE,
+	m.ORDER_NUM,
+	m.CREATE_TIME,
+	m.CREATOR,
+	m.MODIFY_TIME,
+	m.MODIFIER
+FROM
+	base_menu m
+	LEFT JOIN base_role_menu_relation e ON m.MENU_ID = e.MENU_ID
+	AND e.DELETE_FLAG = 'N'
+	LEFT JOIN base_user_role_relation r ON e.ROLE_ID = r.ROLE_ID
+	AND r.DELETE_FLAG = 'N'
+	LEFT JOIN base_user u ON r.USER_ID = u.ID
+	AND u.DELETE_FLAG = 'N'
+	WHERE u.ID = #{userId} AND m.DELETE_FLAG = 'N'
+	AND m.TYPE = 0
+GROUP BY
+	m.MENU_ID,
+	m.PARENT_ID,
+	m.MENU_NAME,
+	m.URL,
+	m.PERMS,
+	m.ICON,
+	m.TYPE,
+	m.ORDER_NUM,
+	m.CREATE_TIME,
+	m.CREATOR,
+	m.MODIFY_TIME,
+	m.MODIFIER
+    </select>
+    <delete id="deleteByPrimaryKey" >
+    delete from base_menu
+    where MENU_ID = #{menuId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" keyColumn="MENU_ID" keyProperty="menuId" parameterType="com.cmcc.model.user.Menu" useGeneratedKeys="true">
+    insert into base_menu (PARENT_ID, MENU_NAME, URL,
+      PERMS, ICON, `TYPE`,
+      ORDER_NUM, CREATE_TIME, CREATOR,
+      MODIFY_TIME, MODIFIER, DELETE_FLAG
+      )
+    values (#{parentId,jdbcType=BIGINT}, #{menuName,jdbcType=VARCHAR}, #{url,jdbcType=VARCHAR},
+      #{perms,jdbcType=VARCHAR}, #{icon,jdbcType=VARCHAR}, #{type,jdbcType=VARCHAR},
+      #{orderNum,jdbcType=BIGINT}, #{createTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=BIGINT},
+      #{modifyTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR}
+      )
+  </insert>
+    <insert id="insertSelective" keyColumn="MENU_ID" keyProperty="menuId" parameterType="com.cmcc.model.user.Menu" useGeneratedKeys="true">
+        insert into base_menu
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="menuId != null">
+                MENU_ID,
+            </if>
+            <if test="parentId != null">
+                PARENT_ID,
+            </if>
+            <if test="menuName != null and menuName != ''">
+                MENU_NAME,
+            </if>
+            <if test="url != null and url != ''">
+                URL,
+            </if>
+            <if test="perms != null and perms != ''">
+                PERMS,
+            </if>
+            <if test="icon != null and icon != ''">
+                ICON,
+            </if>
+            <if test="type != null and type != ''">
+                TYPE,
+            </if>
+            <if test="orderNum != null">
+                ORDER_NUM,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="creator != null">
+                CREATOR,
+            </if>
+            <if test="modifyTime != null">
+                MODIFY_TIME,
+            </if>
+            <if test="modifier != null">
+                MODIFIER,
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                DELETE_FLAG,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="menuId != null">
+                #{menuId},
+            </if>
+            <if test="parentId != null">
+                #{parentId},
+            </if>
+            <if test="menuName != null and menuName != ''">
+                #{menuName},
+            </if>
+            <if test="url != null and url != ''">
+                #{url},
+            </if>
+            <if test="perms != null and perms != ''">
+                #{perms},
+            </if>
+            <if test="icon != null and icon != ''">
+                #{icon},
+            </if>
+            <if test="type != null and type != ''">
+                #{type},
+            </if>
+            <if test="orderNum != null">
+                #{orderNum},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                #{deleteFlag},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cmcc.model.user.Menu">
+        update base_menu
+        <set>
+            <if test="parentId != null">
+                PARENT_ID = #{parentId},
+            </if>
+            <if test="menuName != null and menuName != ''">
+                MENU_NAME = #{menuName},
+            </if>
+            <if test="url != null and url != ''">
+                URL = #{url},
+            </if>
+            <if test="perms != null and perms != ''">
+                PERMS = #{perms},
+            </if>
+            <if test="icon != null and icon != ''">
+                ICON = #{icon},
+            </if>
+            <if test="type != null and type != ''">
+                TYPE = #{type},
+            </if>
+            <if test="orderNum != null">
+                ORDER_NUM = #{orderNum},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime},
+            </if>
+            <if test="creator != null">
+                CREATOR = #{creator},
+            </if>
+            <if test="modifyTime != null">
+                MODIFY_TIME = #{modifyTime},
+            </if>
+            <if test="modifier != null">
+                MODIFIER = #{modifier},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                DELETE_FLAG = #{deleteFlag},
+            </if>
+        </set>
+        where MENU_ID = #{menuId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cmcc.model.user.Menu">
+    update base_menu
+    set PARENT_ID = #{parentId,jdbcType=BIGINT},
+      MENU_NAME = #{menuName,jdbcType=VARCHAR},
+      URL = #{url,jdbcType=VARCHAR},
+      PERMS = #{perms,jdbcType=VARCHAR},
+      ICON = #{icon,jdbcType=VARCHAR},
+      `TYPE` = #{type,jdbcType=VARCHAR},
+      ORDER_NUM = #{orderNum,jdbcType=BIGINT},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATOR = #{creator,jdbcType=BIGINT},
+      MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+      MODIFIER = #{modifier,jdbcType=BIGINT},
+      DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR}
+    where MENU_ID = #{menuId,jdbcType=BIGINT}
+  </update>
+</mapper>

@@ -1,0 +1,35 @@
+zookeeper:
+  address:
+    - 172.17.30.11:2181
+    - 172.17.30.12:2181
+    - 172.17.30.13:2181
+  timeout: 10000
+  protocol: zookeeper
+
+spring:
+  redis:
+    database: 2
+    host: r-2ze9685da31e8de4.redis.rds.aliyuncs.com
+    port: 6379
+    maxIdle: 8
+    timeout: 0
+    pool.maxActive: 8
+    pool.maxWait: -1
+    pool.minIdle: 0
+    password: ep9gJL3RmNqL3zQx
+  urlFilter:
+    excludes: "*"
+#      excludes: actService,notice
+
+logging:
+  file: logs/cmcc_web.log
+  level.*: INFO
+
+shiro:
+  loginUrl: /user/login
+  successUrl: /index
+  unauthorizedUrl: OO
+  logoutUrl: /logout
+  anonUrl:
+  cookieTimeout: 86400
+  sessionTimeout: 1800000

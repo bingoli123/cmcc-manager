@@ -1,0 +1,5 @@
+org.springframework.boot.autoconfigure.EnableAutoConfiguration=\
+  com.cmcc.config.dubbo.DubboRegistryAutoConfig,\
+  com.cmcc.config.dubbo.EnableDubboXMLConfig,\
+  com.cmcc.config.redis.RedisConfig,\
+  com.cmcc.config.dubbo.DubboAppConfigration

@@ -1,0 +1,117 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmcc.dao.user.OperationLogDao">
+  <resultMap id="BaseResultMap" type="com.cmcc.model.user.OperationLog">
+    <id column="ID" jdbcType="BIGINT" property="id" />
+    <result column="CONTENT" jdbcType="VARCHAR" property="content" />
+    <result column="USER_NAME" jdbcType="VARCHAR" property="userName" />
+    <result column="OPERATE_TIME" jdbcType="DECIMAL" property="operateTime" />
+    <result column="METHOD_NAME" jdbcType="VARCHAR" property="methodName" />
+    <result column="IP" jdbcType="VARCHAR" property="ip" />
+    <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime" />
+  </resultMap>
+  <sql id="Base_Column_List">
+    ID, CONTENT, USER_NAME, OPERATE_TIME, METHOD_NAME, IP, CREATE_TIME
+  </sql>
+  <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+    select
+    <include refid="Base_Column_List" />
+    from operation_log
+    where ID = #{id,jdbcType=BIGINT}
+  </select>
+  <delete id="deleteByPrimaryKey" >
+    delete from operation_log
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+  <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.cmcc.model.user.OperationLog" useGeneratedKeys="true">
+    insert into operation_log (CONTENT, USER_NAME, OPERATE_TIME,
+      METHOD_NAME, IP, CREATE_TIME
+      )
+    values (#{content,jdbcType=VARCHAR}, #{userName,jdbcType=VARCHAR}, #{operateTime,jdbcType=DECIMAL},
+      #{methodName,jdbcType=VARCHAR}, #{ip,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP}
+      )
+  </insert>
+  <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.cmcc.model.user.OperationLog" useGeneratedKeys="true">
+    insert into operation_log
+    <trim prefix="(" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        ID,
+      </if>
+      <if test="content != null and content != ''">
+        CONTENT,
+      </if>
+      <if test="userName != null and userName != ''">
+        USER_NAME,
+      </if>
+      <if test="operateTime != null">
+        OPERATE_TIME,
+      </if>
+      <if test="methodName != null and methodName != ''">
+        METHOD_NAME,
+      </if>
+      <if test="ip != null and ip != ''">
+        IP,
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME,
+      </if>
+    </trim>
+    <trim prefix="values (" suffix=")" suffixOverrides=",">
+      <if test="id != null">
+        #{id},
+      </if>
+      <if test="content != null and content != ''">
+        #{content},
+      </if>
+      <if test="userName != null and userName != ''">
+        #{userName},
+      </if>
+      <if test="operateTime != null">
+        #{operateTime},
+      </if>
+      <if test="methodName != null and methodName != ''">
+        #{methodName},
+      </if>
+      <if test="ip != null and ip != ''">
+        #{ip},
+      </if>
+      <if test="createTime != null">
+        #{createTime},
+      </if>
+    </trim>
+  </insert>
+  <update id="updateByPrimaryKeySelective" parameterType="com.cmcc.model.user.OperationLog">
+    update operation_log
+    <set>
+      <if test="content != null and content != ''">
+        CONTENT = #{content},
+      </if>
+      <if test="userName != null and userName != ''">
+        USER_NAME = #{userName},
+      </if>
+      <if test="operateTime != null">
+        OPERATE_TIME = #{operateTime},
+      </if>
+      <if test="methodName != null and methodName != ''">
+        METHOD_NAME = #{methodName},
+      </if>
+      <if test="ip != null and ip != ''">
+        IP = #{ip},
+      </if>
+      <if test="createTime != null">
+        CREATE_TIME = #{createTime},
+      </if>
+    </set>
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+  <update id="updateByPrimaryKey" parameterType="com.cmcc.model.user.OperationLog">
+    update operation_log
+    set CONTENT = #{content,jdbcType=VARCHAR},
+      USER_NAME = #{userName,jdbcType=VARCHAR},
+      OPERATE_TIME = #{operateTime,jdbcType=DECIMAL},
+      METHOD_NAME = #{methodName,jdbcType=VARCHAR},
+      IP = #{ip,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+</mapper>

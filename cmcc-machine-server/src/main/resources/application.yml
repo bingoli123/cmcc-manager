@@ -1,0 +1,28 @@
+spring:
+  profiles:
+    active: @profiles.active@
+
+interconn:
+  project: cmcc-manager
+  app: cmcc-machine-server
+
+dubbo:
+  port: 20882
+  timeout: 10000
+  threads: 100
+  heartBeats: 10000
+  application:
+    qos:
+      enable=false:
+
+mybatis:
+  type-aliases-package: com.cmcc.model
+  mapper-locations: classpath*:mapper/**/*Mapper.xml
+  configuration:
+#  开启自动驼峰命名规则（camel case）映射，即从经典数据库列名 A_COLUMN 到经典 Java 属性名 aColumn 的类似映射。
+    map-underscore-to-camel-case: true
+pagehelper:
+  helperDialect: mysql
+  reasonable: false
+  supportMethodsArguments: true
+  params: count=countSql

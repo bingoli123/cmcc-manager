@@ -1,0 +1,18 @@
+spring:
+  profiles:
+    active: @profiles.active@
+  http:
+    multipart:
+      maxFileSize: 8Mb
+interconn:
+  project: cmcc-web
+  app: cmcc-web
+dubbo:
+  qos:
+    port: 22221
+server:
+  port: 8777
+  context-path: /
+
+
+

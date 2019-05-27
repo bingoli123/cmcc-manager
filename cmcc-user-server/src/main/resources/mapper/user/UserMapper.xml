@@ -1,0 +1,240 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmcc.dao.user.UserDao">
+    <resultMap type="com.cmcc.model.user.User" id="BaseUserMap">
+        <id column="ID" jdbcType="BIGINT" property="id" />
+        <result property="userName" column="USER_NAME" jdbcType="VARCHAR"/>
+        <result property="password" column="PASSWORD" jdbcType="VARCHAR"/>
+        <result property="email" column="EMAIL" jdbcType="VARCHAR"/>
+        <result property="mobile" column="MOBILE" jdbcType="VARCHAR"/>
+        <result property="status" column="STATUS" jdbcType="VARCHAR"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="creator" column="CREATOR" jdbcType="BIGINT"/>
+        <result property="modifyTime" column="MODIFY_TIME" jdbcType="TIMESTAMP"/>
+        <result property="modifier" column="MODIFIER" jdbcType="BIGINT"/>
+        <result property="deleteFlag" column="DELETE_FLAG" jdbcType="VARCHAR"/>
+        <result property="lastLoginTime" column="LAST_LOGIN_TIME" jdbcType="TIMESTAMP"/>
+        <result property="sex" column="SEX" jdbcType="VARCHAR"/>
+        <result property="description" column="DESCRIPTION" jdbcType="VARCHAR"/>
+        <result property="userChName" column="USER_CH_NAME" jdbcType="VARCHAR"/>
+        <result property="companyId" column="COMPANY_ID" jdbcType="BIGINT"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ID, USER_NAME, `PASSWORD`, EMAIL, MOBILE, `STATUS`, CREATE_TIME, CREATOR, MODIFY_TIME,
+    MODIFIER, DELETE_FLAG, LAST_LOGIN_TIME, SEX,COMPANY_ID, DESCRIPTION,USER_CH_NAME
+  </sql>
+    <!--查询单个-->
+    <select id="queryByMobile" resultMap="BaseUserMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM base_user
+        where MOBILE = #{mobile}
+    </select>
+    <!--查询单个-->
+    <select id="queryByUserName" resultMap="BaseUserMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM base_user
+        where USER_NAME = #{userName}
+    </select>
+    <select id="selectByPrimaryKey"  resultMap="BaseUserMap">
+        select
+        <include refid="Base_Column_List" />
+        from base_user
+        where ID = #{id,jdbcType=BIGINT}
+    </select>
+    <delete id="deleteByPrimaryKey" >
+    delete from base_user
+    where ID = #{id,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" keyColumn="ID" keyProperty="id" parameterType="com.cmcc.model.user.User" useGeneratedKeys="true">
+    insert into base_user (USER_NAME, `PASSWORD`, EMAIL,
+      MOBILE, `STATUS`, CREATE_TIME,
+      CREATOR, MODIFY_TIME, MODIFIER,
+      DELETE_FLAG, LAST_LOGIN_TIME, SEX,COMPANY_ID,
+      DESCRIPTION,USER_CH_NAME)
+    values (#{userName,jdbcType=VARCHAR}, #{password,jdbcType=VARCHAR}, #{email,jdbcType=VARCHAR},
+      #{mobile,jdbcType=VARCHAR}, #{status,jdbcType=VARCHAR}, #{createTime,jdbcType=TIMESTAMP},
+      #{creator,jdbcType=BIGINT}, #{modifyTime,jdbcType=TIMESTAMP}, #{modifier,jdbcType=BIGINT},
+      #{deleteFlag,jdbcType=VARCHAR}, #{lastLoginTime,jdbcType=TIMESTAMP}, #{sex,jdbcType=CHAR},#{companyId,jdbcType=BIGINT},
+      #{description,jdbcType=VARCHAR},#{userChName,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" keyColumn="ID" keyProperty="id" parameterType="com.cmcc.model.user.User" useGeneratedKeys="true">
+        insert into base_user
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userName != null and userName != '' ">
+                USER_NAME,
+            </if>
+            <if test="password != null and password != '' ">
+                `PASSWORD`,
+            </if>
+            <if test="email != null and email != '' ">
+                EMAIL,
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                MOBILE,
+            </if>
+            <if test="status != null and status != '' ">
+                `STATUS`,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="creator != null ">
+                CREATOR,
+            </if>
+            <if test="modifyTime != null">
+                MODIFY_TIME,
+            </if>
+            <if test="modifier != null ">
+                MODIFIER,
+            </if>
+            <if test="deleteFlag != null and deleteFlag !='' ">
+                DELETE_FLAG,
+            </if>
+            <if test="lastLoginTime != null">
+                LAST_LOGIN_TIME,
+            </if>
+            <if test="sex != null and sex != '' ">
+                SEX,
+            </if>
+            <if test="companyId != null">
+                COMPANY_ID,
+            </if>
+            <if test="description != null and description != '' ">
+                DESCRIPTION,
+            </if>
+            <if test="userChName != null and userChName != '' ">
+                USER_CH_NAME,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userName != null and userName != '' ">
+                #{userName,jdbcType=VARCHAR},
+            </if>
+            <if test="password != null and password != '' ">
+                #{password,jdbcType=VARCHAR},
+            </if>
+            <if test="email != null and email !='' ">
+                #{email,jdbcType=VARCHAR},
+            </if>
+            <if test="mobile != null and mobile != '' ">
+                #{mobile,jdbcType=VARCHAR},
+            </if>
+            <if test="status != null and status != '' ">
+                #{status,jdbcType=VARCHAR},
+            </if>
+            <if test="createTime != null">
+                #{createTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="creator != null  ">
+                #{creator,jdbcType=BIGINT},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="modifier != null  ">
+                #{modifier,jdbcType=BIGINT},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != '' ">
+                #{deleteFlag,jdbcType=VARCHAR},
+            </if>
+            <if test="lastLoginTime != null">
+                #{lastLoginTime,jdbcType=TIMESTAMP},
+            </if>
+            <if test="sex != null and sex != '' ">
+                #{sex,jdbcType=CHAR},
+            </if>
+            <if test="companyId != null ">
+                #{companyId,jdbcType=BIGINT},
+            </if>
+            <if test="description != null and description != '' ">
+                #{description,jdbcType=VARCHAR},
+            </if>
+            <if test="userChName != null and userChName != '' ">
+                #{USER_CH_NAME,jdbcType=VARCHAR},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cmcc.model.user.User">
+        update base_user
+        <set>
+            <if test="userName != null and userName != ''">
+                USER_NAME = #{userName},
+            </if>
+            <if test="password != null and password != ''">
+                PASSWORD = #{password},
+            </if>
+            <if test="email != null and email != ''">
+                EMAIL = #{email},
+            </if>
+            <if test="mobile != null and mobile != ''">
+                MOBILE = #{mobile},
+            </if>
+            <if test="status != null and status != ''">
+                STATUS = #{status},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime},
+            </if>
+            <if test="creator != null">
+                CREATOR = #{creator},
+            </if>
+            <if test="modifyTime != null">
+                MODIFY_TIME = #{modifyTime},
+            </if>
+            <if test="modifier != null">
+                MODIFIER = #{modifier},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                DELETE_FLAG = #{deleteFlag},
+            </if>
+            <if test="lastLoginTime != null">
+                LAST_LOGIN_TIME = #{lastLoginTime},
+            </if>
+            <if test="sex != null and sex != ''">
+                SEX = #{sex},
+            </if>
+            <if test="description != null and description != ''">
+                DESCRIPTION = #{description},
+            </if>
+            <if test="userChName != null and userChName != ''">
+                USER_CH_NAME = #{userChName},
+            </if>
+            <if test="companyId != null">
+                COMPANY_ID = #{companyId},
+            </if>
+        </set>
+        where ID = #{id,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cmcc.model.user.User">
+    update base_user
+    set USER_NAME = #{userName,jdbcType=VARCHAR},
+      `PASSWORD` = #{password,jdbcType=VARCHAR},
+      EMAIL = #{email,jdbcType=VARCHAR},
+      MOBILE = #{mobile,jdbcType=VARCHAR},
+      `STATUS` = #{status,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATOR = #{creator,jdbcType=BIGINT},
+      MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+      MODIFIER = #{modifier,jdbcType=BIGINT},
+      DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR},
+      LAST_LOGIN_TIME = #{lastLoginTime,jdbcType=TIMESTAMP},
+      SEX = #{sex,jdbcType=CHAR},
+      COMPANY_ID = #{companyId,jdbcType=BIGINT},
+      DESCRIPTION = #{description,jdbcType=VARCHAR},
+      USER_CH_NAME = #{userChName,jdbcType=VARCHAR}
+    where ID = #{id,jdbcType=BIGINT}
+  </update>
+
+    <!--查询公司id下的所有用户-->
+    <select id="queryUserByCompany" resultMap="BaseUserMap">
+        SELECT
+        <include refid="Base_Column_List"/>
+        FROM base_user
+        where COMPANY_ID = #{companyId} and status='1'
+        <if test="userName!=null and userName!=''">
+            and USER_NAME like concat('%',#{userName},'%')
+        </if>
+    </select>
+</mapper>

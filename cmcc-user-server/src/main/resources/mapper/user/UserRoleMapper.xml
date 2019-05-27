@@ -1,0 +1,168 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmcc.dao.user.UserRoleDao">
+    <resultMap type="com.cmcc.model.user.UserRole" id="UserRoleMap">
+        <result property="userRoleId" column="USER_ROLE_ID" jdbcType="BIGINT"/>
+        <result property="userId" column="USER_ID" jdbcType="BIGINT"/>
+        <result property="roleId" column="ROLE_ID" jdbcType="BIGINT"/>
+        <result property="createTime" column="CREATE_TIME" jdbcType="TIMESTAMP"/>
+        <result property="creator" column="CREATOR" jdbcType="BIGINT"/>
+        <result property="modifyTime" column="MODIFY_TIME" jdbcType="TIMESTAMP"/>
+        <result property="modifier" column="MODIFIER" jdbcType="BIGINT"/>
+        <result property="deleteFlag" column="DELETE_FLAG" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserRoleMap">
+        select
+          USER_ROLE_ID, USER_ID, ROLE_ID, CREATE_TIME, CREATOR, MODIFY_TIME, MODIFIER, DELETE_FLAG
+        from cmcc_manager.base_user_role_relation
+        where USER_ROLE_ID = #{userRoleId}
+    </select>
+
+    <!--查询-->
+    <select id="queryRoleList" resultMap="UserRoleMap">
+       select USER_ID,ROLE_ID
+        from base_user_role_relation
+        where USER_ID = #{userId}
+    </select>
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserRoleMap">
+        select
+          USER_ROLE_ID, USER_ID, ROLE_ID, CREATE_TIME, CREATOR, MODIFY_TIME, MODIFIER, DELETE_FLAG
+        from cmcc_manager.base_user_role_relation
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserRoleMap">
+        select
+        USER_ROLE_ID, USER_ID, ROLE_ID, CREATE_TIME, CREATOR, MODIFY_TIME, MODIFIER, DELETE_FLAG
+        from cmcc_manager.base_user_role_relation
+        <where>
+            <if test="userRoleId != null">
+                and USER_ROLE_ID = #{userRoleId}
+            </if>
+            <if test="userId != null">
+                and USER_ID = #{userId}
+            </if>
+            <if test="roleId != null">
+                and ROLE_ID = #{roleId}
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime}
+            </if>
+            <if test="creator != null">
+                and CREATOR = #{creator}
+            </if>
+            <if test="modifyTime != null">
+                and MODIFY_TIME = #{modifyTime}
+            </if>
+            <if test="modifier != null">
+                and MODIFIER = #{modifier}
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                and DELETE_FLAG = #{deleteFlag}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="userRoleId" useGeneratedKeys="true">
+        insert into cmcc_manager.base_user_role_relation(USER_ID, ROLE_ID, CREATE_TIME, CREATOR, MODIFY_TIME, MODIFIER, DELETE_FLAG)
+        values (#{userId}, #{roleId}, #{createTime}, #{creator}, #{modifyTime}, #{modifier}, #{deleteFlag})
+    </insert>
+
+    <!--新增insertSelective列-->
+    <insert id="insertSelective" keyColumn="USER_ROLE_ID" keyProperty="userRoleId"
+            parameterType="com.cmcc.model.user.UserRole" useGeneratedKeys="true">
+        insert into cmcc_manager.base_user_role_relation
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="userRoleId != null">
+                USER_ROLE_ID,
+            </if>
+            <if test="userId != null">
+                USER_ID,
+            </if>
+            <if test="roleId != null">
+                ROLE_ID,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="creator != null">
+                CREATOR,
+            </if>
+            <if test="modifyTime != null">
+                MODIFY_TIME,
+            </if>
+            <if test="modifier != null">
+                MODIFIER,
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                DELETE_FLAG,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="userRoleId != null">
+                #{userRoleId},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="roleId != null">
+                #{roleId},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                #{deleteFlag},
+            </if>
+        </trim>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update cmcc_manager.base_user_role_relation
+        <set>
+            <if test="userId != null">
+                USER_ID = #{userId},
+            </if>
+            <if test="roleId != null">
+                ROLE_ID = #{roleId},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime},
+            </if>
+            <if test="creator != null">
+                CREATOR = #{creator},
+            </if>
+            <if test="modifyTime != null">
+                MODIFY_TIME = #{modifyTime},
+            </if>
+            <if test="modifier != null">
+                MODIFIER = #{modifier},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                DELETE_FLAG = #{deleteFlag},
+            </if>
+        </set>
+        where USER_ROLE_ID = #{userRoleId}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from cmcc_manager.base_user_role_relation where USER_ROLE_ID = #{userRoleId}
+    </delete>
+
+</mapper>

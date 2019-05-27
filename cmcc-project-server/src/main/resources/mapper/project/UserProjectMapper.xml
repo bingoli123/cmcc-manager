@@ -1,0 +1,155 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmcc.dao.project.UserProjectDao">
+
+    <resultMap type="com.cmcc.model.project.UserProject" id="UserProjectMap">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="userId" column="user_id" jdbcType="BIGINT"/>
+        <result property="projectId" column="project_id" jdbcType="BIGINT"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="VARCHAR"/>
+        <result property="createDate" column="create_date" jdbcType="TIMESTAMP"/>
+        <result property="creator" column="creator" jdbcType="BIGINT"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="UserProjectMap">
+        select
+          id, user_id, project_id, delete_flag, create_date, creator
+        from cmcc_manager.rel_user_project
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="UserProjectMap">
+        select
+          id, user_id, project_id, delete_flag, create_date, creator
+        from cmcc_manager.rel_user_project
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="UserProjectMap">
+        select
+        id, user_id, project_id, delete_flag, create_date, creator
+        from cmcc_manager.rel_user_project
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="userId != null">
+                and user_id = #{userId}
+            </if>
+            <if test="projectId != null">
+                and project_id = #{projectId}
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                and delete_flag = #{deleteFlag}
+            </if>
+            <if test="createDate != null">
+                and create_date = #{createDate}
+            </if>
+            <if test="creator != null">
+                and creator = #{creator}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into cmcc_manager.rel_user_project(user_id, project_id, delete_flag, create_date, creator)
+        values (#{userId}, #{projectId}, #{deleteFlag}, #{createDate}, #{creator})
+    </insert>
+
+    <!--新增insertSelective列-->
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.cmcc.model.project.UserProject"
+            useGeneratedKeys="true">
+        insert into cmcc_manager.rel_user_project
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="userId != null">
+                user_id,
+            </if>
+            <if test="projectId != null">
+                project_id,
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                delete_flag,
+            </if>
+            <if test="createDate != null">
+                create_date,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="userId != null">
+                #{userId},
+            </if>
+            <if test="projectId != null">
+                #{projectId},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                #{deleteFlag},
+            </if>
+            <if test="createDate != null">
+                #{createDate},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+        </trim>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update cmcc_manager.rel_user_project
+        <set>
+            <if test="userId != null">
+                user_id = #{userId},
+            </if>
+            <if test="projectId != null">
+                project_id = #{projectId},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                delete_flag = #{deleteFlag},
+            </if>
+            <if test="createDate != null">
+                create_date = #{createDate},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from cmcc_manager.rel_user_project where id = #{id}
+    </delete>
+
+
+    <insert id="insertByList" keyProperty="id" useGeneratedKeys="true">
+        insert into cmcc_manager.rel_user_project(user_id, project_id, delete_flag, create_date, creator)
+        values
+        <foreach collection="userProjectList" item="userProject" index="index" separator=",">
+            (#{userProject.userId}, #{userProject.projectId}, #{userProject.deleteFlag}, #{userProject.createDate}, #{userProject.creator})
+        </foreach>
+
+    </insert>
+
+    <delete id="deleteByList" >
+        delete from cmcc_manager.rel_user_project
+        where project_id=#{projectId}
+        and user_id in
+        <foreach collection="ids" close=")" index="item" item="item" open="(" separator=",">
+            #{item,jdbcType=BIGINT}
+        </foreach>
+    </delete>
+</mapper>

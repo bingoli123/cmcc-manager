@@ -1,0 +1,47 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!--
+    ~ Copyright (c) 2017 interconn@Haier
+  -->
+
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:dubbo="http://code.alibabatech.com/schema/dubbo"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        http://www.springframework.org/schema/beans/spring-beans.xsd
+        http://code.alibabatech.com/schema/dubbo
+        http://code.alibabatech.com/schema/dubbo/dubbo.xsd">
+    <!--注册中心发现服务地址-->
+    <!--集成点登录-->
+    <!-- this is for dev -->
+    <!--<dubbo:registry id="uap" address="zookeeper://59.110.166.227:2181"/>-->
+    <!-- this is for test -->
+    <!-- <dubbo:registry id="uap" address="zookeeper://10.135.26.122:2181"/> -->
+    <!--<dubbo:registry id="uap" address="zookeeper://10.135.12.6:2181"/>-->
+    <!-- 生成远程服务代理，可以和本地bean一样使用-->
+    <!--<dubbo:application name="cac-web" version="1.0.0" />-->
+    <!-- 消费codelist  -->
+    <dubbo:reference retries="0" interface="com.cmcc.service.user.UserService"
+                     id="userServiceImpl" check="false" timeout="100000" version="1.0.0"/>
+    <dubbo:reference retries="0" interface="com.cmcc.service.user.UserRoleService"
+                     id="userRoleServiceImpl" check="false" timeout="100000" version="1.0.0"/>
+    <dubbo:reference retries="0" interface="com.cmcc.service.user.MenuService"
+                     id="menuServiceImpl" check="false" timeout="100000" version="1.0.0"/>
+    <dubbo:reference retries="0" interface="com.cmcc.service.user.OperationLogService"
+                     id="operationLogServiceImpl" check="false" timeout="100000" version="1.0.0"/>
+    <dubbo:reference retries="0" interface="com.cmcc.service.user.RoleService"
+                     id="roleServiceImpl" check="false" timeout="100000" version="1.0.0"/>
+    <dubbo:reference retries="0" interface="com.cmcc.service.company.DataCompanyService"
+                     id="dataCompanyServiceImpl" check="false" timeout="100000" version="1.0.0"/>
+    <dubbo:reference retries="0" interface="com.cmcc.service.cd.CodelistService"
+                     id="codelistServiceImpl" check="false" timeout="100000" version="1.0.0"/>
+
+    <dubbo:reference interface="com.cmcc.service.project.DataProjectService" timeout="100000" version="1.0.0"
+                     id="dataProjectServiceImpl" check="false" retries="0"/>
+
+    <dubbo:reference interface="com.cmcc.service.device.DeviceMaintainLogService" timeout="100000" version="1.0.0"
+                     id="deviceMaintainLogServiceImpl" check="false" retries="0"/>
+
+    <dubbo:reference interface="com.cmcc.service.project.UserProjectService" timeout="100000" version="1.0.0"
+                   id="userProjectServiceImpl" check="false" retries="0" />
+</beans>

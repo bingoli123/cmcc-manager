@@ -1,0 +1,291 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmcc.dao.project.DataProjectDao">
+
+    <resultMap type="com.cmcc.model.project.DataProject" id="DataProjectMap">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="projectName" column="project_name" jdbcType="VARCHAR"/>
+        <result property="projectAddress" column="project_address" jdbcType="VARCHAR"/>
+        <result property="projectContactName" column="project_contact_name" jdbcType="VARCHAR"/>
+        <result property="projectContactPhone" column="project_contact_phone" jdbcType="VARCHAR"/>
+        <result property="projectContactEmail" column="project_contact_email" jdbcType="VARCHAR"/>
+        <result property="distributorContactName" column="distributor_contact_name" jdbcType="VARCHAR"/>
+        <result property="distributorContactPhone" column="distributor_contact_phone" jdbcType="VARCHAR"/>
+        <result property="distributorContactEmail" column="distributor_contact_email" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="BIGINT"/>
+        <result property="city" column="city" jdbcType="BIGINT"/>
+        <result property="buildType" column="build_type" jdbcType="VARCHAR"/>
+        <result property="warmSourceForm" column="warm_source_form" jdbcType="VARCHAR"/>
+        <result property="coldSourceForm" column="cold_source_form" jdbcType="VARCHAR"/>
+        <result property="startTime" column="start_time" jdbcType="DATE"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="creator" column="creator" jdbcType="BIGINT"/>
+        <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+        <result property="modifier" column="modifier" jdbcType="BIGINT"/>
+        <result property="creatorName" column="creator_name" jdbcType="VARCHAR" />
+        <result property="modifierName" column="modifier_name" jdbcType="VARCHAR" />
+    </resultMap>
+    <resultMap type="com.cmcc.model.project.DataProject" id="DataProject">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="projectName" column="project_name" jdbcType="VARCHAR"/>
+        <result property="projectAddress" column="project_address" jdbcType="VARCHAR"/>
+        <result property="projectContactName" column="project_contact_name" jdbcType="VARCHAR"/>
+        <result property="projectContactPhone" column="project_contact_phone" jdbcType="VARCHAR"/>
+        <result property="projectContactEmail" column="project_contact_email" jdbcType="VARCHAR"/>
+        <result property="distributorContactName" column="distributor_contact_name" jdbcType="VARCHAR"/>
+        <result property="distributorContactPhone" column="distributor_contact_phone" jdbcType="VARCHAR"/>
+        <result property="distributorContactEmail" column="distributor_contact_email" jdbcType="VARCHAR"/>
+        <result property="province" column="province" jdbcType="BIGINT"/>
+        <result property="city" column="city" jdbcType="BIGINT"/>
+        <result property="buildType" column="build_type" jdbcType="VARCHAR"/>
+        <result property="warmSourceForm" column="warm_source_form" jdbcType="VARCHAR"/>
+        <result property="coldSourceForm" column="cold_source_form" jdbcType="VARCHAR"/>
+        <result property="startTime" column="start_time" jdbcType="DATE"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="creator" column="creator" jdbcType="BIGINT"/>
+        <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+        <result property="modifier" column="modifier" jdbcType="BIGINT"/>
+        <result property="creatorName" column="creator_name" jdbcType="VARCHAR" />
+        <result property="modifierName" column="modifier_name" jdbcType="VARCHAR" />
+        <result property="cityName" column="city_name" jdbcType="VARCHAR" />
+        <result property="provinceName" column="province_name" jdbcType="VARCHAR" />
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="DataProjectMap">
+        select
+          id, project_name, project_address, project_contact_name, project_contact_phone, project_contact_email, distributor_contact_name, distributor_contact_phone, distributor_contact_email, province, city, build_type, warm_source_form, cold_source_form, start_time, delete_flag, create_time, creator, modify_time, modifier,modifier_name,creator_name
+        from cmcc_manager.data_project
+        where id = #{id}
+    </select>
+
+
+<!--    根据项目名查询有无同名的项目,并且如果id不为空的则查询id不等于此id的数据-->
+    <select id="queryProjectByName" resultType="java.lang.Integer">
+        select
+          count(0)
+        from cmcc_manager.data_project
+        where project_name = #{projectName}
+        <if test="id!=null">
+            and id!=#{id}
+        </if>
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="DataProjectMap">
+        select
+          id, project_name, project_address, project_contact_name, project_contact_phone, project_contact_email, distributor_contact_name, distributor_contact_phone, distributor_contact_email, province, city, build_type, warm_source_form, cold_source_form, start_time, delete_flag, create_time, creator, modify_time, modifier,modifier_name,creator_name
+        from cmcc_manager.data_project
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="DataProjectMap">
+        select
+          id, project_name, project_address, project_contact_name, project_contact_phone, project_contact_email, distributor_contact_name, distributor_contact_phone, distributor_contact_email, province, city, build_type, warm_source_form, cold_source_form, start_time, delete_flag, create_time, creator, modify_time, modifier,modifier_name,creator_name
+        from cmcc_manager.data_project
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="projectName != null and projectName != ''">
+                and project_name = #{projectName}
+            </if>
+            <if test="projectAddress != null and projectAddress != ''">
+                and project_address = #{projectAddress}
+            </if>
+            <if test="projectContactName != null and projectContactName != ''">
+                and project_contact_name = #{projectContactName}
+            </if>
+            <if test="projectContactPhone != null and projectContactPhone != ''">
+                and project_contact_phone = #{projectContactPhone}
+            </if>
+            <if test="projectContactEmail != null and projectContactEmail != ''">
+                and project_contact_email = #{projectContactEmail}
+            </if>
+            <if test="distributorContactName != null and distributorContactName != ''">
+                and distributor_contact_name = #{distributorContactName}
+            </if>
+            <if test="distributorContactPhone != null and distributorContactPhone != ''">
+                and distributor_contact_phone = #{distributorContactPhone}
+            </if>
+            <if test="distributorContactEmail != null and distributorContactEmail != ''">
+                and distributor_contact_email = #{distributorContactEmail}
+            </if>
+            <if test="province != null">
+                and province = #{province}
+            </if>
+            <if test="city != null">
+                and city = #{city}
+            </if>
+            <if test="buildType != null and buildType != ''">
+                and build_type = #{buildType}
+            </if>
+            <if test="warmSourceForm != null and warmSourceForm != ''">
+                and warm_source_form = #{warmSourceForm}
+            </if>
+            <if test="coldSourceForm != null and coldSourceForm != ''">
+                and cold_source_form = #{coldSourceForm}
+            </if>
+            <if test="startTime != null">
+                and start_time = #{startTime}
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                and delete_flag = #{deleteFlag}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="creator != null">
+                and creator = #{creator}
+            </if>
+            <if test="modifyTime != null">
+                and modify_time = #{modifyTime}
+            </if>
+            <if test="modifier != null">
+                and modifier = #{modifier}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into cmcc_manager.data_project(project_name, project_address, project_contact_name, project_contact_phone, project_contact_email, distributor_contact_name, distributor_contact_phone, distributor_contact_email, province, city, build_type, warm_source_form, cold_source_form, start_time, delete_flag, create_time, creator, modify_time, modifier,modifier_name,creator_name)
+        values (#{projectName}, #{projectAddress}, #{projectContactName}, #{projectContactPhone}, #{projectContactEmail}, #{distributorContactName}, #{distributorContactPhone}, #{distributorContactEmail}, #{province}, #{city}, #{buildType}, #{warmSourceForm}, #{coldSourceForm}, #{startTime}, #{deleteFlag}, #{createTime}, #{creator}, #{modifyTime}, #{modifier},#{modifierName},#{creatorName})
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update cmcc_manager.data_project
+        <set>
+            <if test="projectName != null and projectName != ''">
+                project_name = #{projectName},
+            </if>
+            <if test="projectAddress != null and projectAddress != ''">
+                project_address = #{projectAddress},
+            </if>
+            <if test="projectContactName != null and projectContactName != ''">
+                project_contact_name = #{projectContactName},
+            </if>
+            <if test="projectContactPhone != null and projectContactPhone != ''">
+                project_contact_phone = #{projectContactPhone},
+            </if>
+            <if test="projectContactEmail != null and projectContactEmail != ''">
+                project_contact_email = #{projectContactEmail},
+            </if>
+            <if test="distributorContactName != null and distributorContactName != ''">
+                distributor_contact_name = #{distributorContactName},
+            </if>
+            <if test="distributorContactPhone != null and distributorContactPhone != ''">
+                distributor_contact_phone = #{distributorContactPhone},
+            </if>
+            <if test="distributorContactEmail != null and distributorContactEmail != ''">
+                distributor_contact_email = #{distributorContactEmail},
+            </if>
+            <if test="province != null">
+                province = #{province},
+            </if>
+            <if test="city != null">
+                city = #{city},
+            </if>
+            <if test="buildType != null and buildType != ''">
+                build_type = #{buildType},
+            </if>
+            <if test="warmSourceForm != null and warmSourceForm != ''">
+                warm_source_form = #{warmSourceForm},
+            </if>
+            <if test="coldSourceForm != null and coldSourceForm != ''">
+                cold_source_form = #{coldSourceForm},
+            </if>
+            <if test="startTime != null">
+                start_time = #{startTime},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                delete_flag = #{deleteFlag},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime},
+            </if>
+
+            <if test="creatorName != null and creatorName != ''">
+                creator_name = #{creatorName},
+            </if>
+            <if test="modifierName != null and modifierName != ''">
+                modifier_name = #{modifierName},
+            </if>
+
+            <if test="modifier != null">
+                modifier = #{modifier}
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+<!--    根据用户id查询 该用户关联的项目列表 分页-->
+    <select id="queryProjectByUserId" resultMap="DataProject">
+            SELECT
+        c.id,
+        c.project_name,
+        c.project_address,
+        c.project_contact_name,
+        c.project_contact_phone,
+        c.project_contact_email,
+        c.distributor_contact_name,
+        c.distributor_contact_phone,
+        c.distributor_contact_email,
+        c.province,
+        c.city,
+        c.build_type,
+        c.warm_source_form,
+        c.cold_source_form,
+        c.start_time,
+        c.delete_flag,
+        c.create_time,
+        c.creator,
+        c.modify_time,
+        c.modifier,
+        c.creator_name,
+        c.modifier_name,
+        d.area_name as province_name,
+        d.area_name as city_name
+        from base_user AS a
+        LEFT JOIN rel_user_project AS b ON a.id = b.user_id
+        LEFT JOIN data_project AS c ON b.project_id = c.id
+        left join base_area_relation as d on c.province=d.id
+        left join base_area_relation as e on c.city=e.id
+    WHERE
+        b.delete_flag = 'N'
+        AND c.delete_flag = 'N'
+        and a.id=#{userId}
+        <if test="projectName != null and projectName != ''">
+            and c.project_name like concat('%',#{projectName},'%')
+        </if>
+        order by c.create_time desc
+    </select>
+
+
+    <!--    查询某个项目授权给了哪些用户 去掉当前登录用户-->
+    <select id="queryUserByProject" resultMap="DataProject">
+        SELECT
+        a.ID
+        from base_user AS a
+        LEFT JOIN rel_user_project AS b ON a.id = b.user_id
+        LEFT JOIN data_project AS c ON b.project_id = c.id
+        WHERE
+        b.delete_flag = 'N'
+        AND c.delete_flag = 'N'
+        and c.id=#{projectId}
+        <if test="loginUserId!=null">
+            and a.id!=#{loginUserId}
+        </if>
+    </select>
+
+</mapper>

@@ -1,0 +1,188 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmcc.dao.device.DeviceMaintainLogDao">
+    <resultMap type="com.cmcc.model.device.DeviceMaintainLog" id="DeviceMaintainLogMap">
+        <result property="id" column="id" jdbcType="BIGINT"/>
+        <result property="deviceId" column="device_id" jdbcType="BIGINT"/>
+        <result property="maintainTime" column="maintain_time" jdbcType="TIMESTAMP"/>
+        <result property="maintainUser" column="maintain_user" jdbcType="VARCHAR"/>
+        <result property="remark" column="remark" jdbcType="VARCHAR"/>
+        <result property="createTime" column="create_time" jdbcType="TIMESTAMP"/>
+        <result property="creator" column="creator" jdbcType="BIGINT"/>
+        <result property="modifyTime" column="modify_time" jdbcType="TIMESTAMP"/>
+        <result property="modifier" column="modifier" jdbcType="BIGINT"/>
+        <result property="deleteFlag" column="delete_flag" jdbcType="VARCHAR"/>
+    </resultMap>
+
+    <!--查询单个-->
+    <select id="queryById" resultMap="DeviceMaintainLogMap">
+        select
+          id, device_id, maintain_time, maintain_user, remark, create_time, creator, modify_time, modifier, delete_flag
+        from cmcc_manager.device_maintain_log
+        where id = #{id}
+    </select>
+
+    <!--查询指定行数据-->
+    <select id="queryAllByLimit" resultMap="DeviceMaintainLogMap">
+        select
+          id, device_id, maintain_time, maintain_user, remark, create_time, creator, modify_time, modifier, delete_flag
+        from cmcc_manager.device_maintain_log
+        limit #{offset}, #{limit}
+    </select>
+
+    <!--通过实体作为筛选条件查询-->
+    <select id="queryAll" resultMap="DeviceMaintainLogMap">
+        select
+        id, device_id, maintain_time, maintain_user, remark, create_time, creator, modify_time, modifier, delete_flag
+        from cmcc_manager.device_maintain_log
+        <where>
+            <if test="id != null">
+                and id = #{id}
+            </if>
+            <if test="deviceId != null">
+                and device_id = #{deviceId}
+            </if>
+            <if test="maintainTime != null">
+                and maintain_time = #{maintainTime}
+            </if>
+            <if test="maintainUser != null and maintainUser != ''">
+                and maintain_user = #{maintainUser}
+            </if>
+            <if test="remark != null and remark != ''">
+                and remark = #{remark}
+            </if>
+            <if test="createTime != null">
+                and create_time = #{createTime}
+            </if>
+            <if test="creator != null">
+                and creator = #{creator}
+            </if>
+            <if test="modifyTime != null">
+                and modify_time = #{modifyTime}
+            </if>
+            <if test="modifier != null">
+                and modifier = #{modifier}
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                and delete_flag = #{deleteFlag}
+            </if>
+        </where>
+    </select>
+
+    <!--新增所有列-->
+    <insert id="insert" keyProperty="id" useGeneratedKeys="true">
+        insert into cmcc_manager.device_maintain_log(device_id, maintain_time, maintain_user, remark, create_time, creator, modify_time, modifier, delete_flag)
+        values (#{deviceId}, #{maintainTime}, #{maintainUser}, #{remark}, #{createTime}, #{creator}, #{modifyTime}, #{modifier}, #{deleteFlag})
+    </insert>
+
+    <!--新增insertSelective列-->
+    <insert id="insertSelective" keyColumn="id" keyProperty="id" parameterType="com.cmcc.model.device.DeviceMaintainLog"
+            useGeneratedKeys="true">
+        insert into cmcc_manager.device_maintain_log
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                id,
+            </if>
+            <if test="deviceId != null">
+                device_id,
+            </if>
+            <if test="maintainTime != null">
+                maintain_time,
+            </if>
+            <if test="maintainUser != null and maintainUser != ''">
+                maintain_user,
+            </if>
+            <if test="remark != null and remark != ''">
+                remark,
+            </if>
+            <if test="createTime != null">
+                create_time,
+            </if>
+            <if test="creator != null">
+                creator,
+            </if>
+            <if test="modifyTime != null">
+                modify_time,
+            </if>
+            <if test="modifier != null">
+                modifier,
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                delete_flag,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="id != null">
+                #{id},
+            </if>
+            <if test="deviceId != null">
+                #{deviceId},
+            </if>
+            <if test="maintainTime != null">
+                #{maintainTime},
+            </if>
+            <if test="maintainUser != null and maintainUser != ''">
+                #{maintainUser},
+            </if>
+            <if test="remark != null and remark != ''">
+                #{remark},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                #{deleteFlag},
+            </if>
+        </trim>
+    </insert>
+
+    <!--通过主键修改数据-->
+    <update id="update">
+        update cmcc_manager.device_maintain_log
+        <set>
+            <if test="deviceId != null">
+                device_id = #{deviceId},
+            </if>
+            <if test="maintainTime != null">
+                maintain_time = #{maintainTime},
+            </if>
+            <if test="maintainUser != null and maintainUser != ''">
+                maintain_user = #{maintainUser},
+            </if>
+            <if test="remark != null and remark != ''">
+                remark = #{remark},
+            </if>
+            <if test="createTime != null">
+                create_time = #{createTime},
+            </if>
+            <if test="creator != null">
+                creator = #{creator},
+            </if>
+            <if test="modifyTime != null">
+                modify_time = #{modifyTime},
+            </if>
+            <if test="modifier != null">
+                modifier = #{modifier},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                delete_flag = #{deleteFlag},
+            </if>
+        </set>
+        where id = #{id}
+    </update>
+
+    <!--通过主键删除-->
+    <delete id="deleteById">
+        delete from cmcc_manager.device_maintain_log where id = #{id}
+    </delete>
+
+</mapper>

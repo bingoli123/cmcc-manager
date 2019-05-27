@@ -1,0 +1,39 @@
+zookeeper:
+  address:
+   - 127.0.0.1:2181
+  timeout: 10000
+  protocol: zookeeper
+  file: cmcc_web
+
+spring:
+  session:
+    store-type: redis
+    timeout: 3600
+    redis:
+      flush-mode: on_save
+      namespace: spring:session
+  redis:
+    host: 43.240.248.111
+    port: 6379
+    maxIdle: 8
+    timeout: 0
+    pool.maxActive: 8
+    pool.maxWait: -1
+    pool.minIdle: 0
+    password: Haier@123
+  urlFilter:
+     excludes: "*"
+#      excludes: actService,notice
+
+logging:
+  file: logs/cmcc_web.log
+  level.*: INFO
+
+shiro:
+  loginUrl: /user/login
+  successUrl: /index
+  unauthorizedUrl: OO
+  logoutUrl: /logout
+  anonUrl: /user/loginBySms,/user/registerUser,/user/sendSmsCode,/user/getCaptcha,/user/checkCaptcha
+  cookieTimeout: 86400
+  sessionTimeout: 1800000

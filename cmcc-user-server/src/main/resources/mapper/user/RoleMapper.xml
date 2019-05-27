@@ -1,0 +1,195 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.cmcc.dao.user.RoleDao">
+    <resultMap id="BaseResultMap" type="com.cmcc.model.user.Role">
+        <id column="ROLE_ID" jdbcType="BIGINT" property="roleId"/>
+        <result column="ROLE_NAME" jdbcType="VARCHAR" property="roleName"/>
+        <result column="COMPANY_ID" jdbcType="BIGINT" property="companyId"/>
+        <result column="REMARK" jdbcType="VARCHAR" property="remark"/>
+        <result column="CREATE_TIME" jdbcType="TIMESTAMP" property="createTime"/>
+        <result column="CREATOR" jdbcType="BIGINT" property="creator"/>
+        <result column="MODIFY_TIME" jdbcType="TIMESTAMP" property="modifyTime"/>
+        <result column="MODIFIER" jdbcType="BIGINT" property="modifier"/>
+        <result column="DELETE_FLAG" jdbcType="VARCHAR" property="deleteFlag"/>
+        <result column="IS_MANAGER" jdbcType="VARCHAR" property="isManager"/>
+    </resultMap>
+    <sql id="Base_Column_List">
+    ROLE_ID, ROLE_NAME, COMPANY_ID, REMARK, CREATE_TIME, CREATOR, MODIFY_TIME, MODIFIER,
+    DELETE_FLAG,IS_MANAGER
+  </sql>
+    <select id="selectByPrimaryKey"  resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from base_role
+        where ROLE_ID = #{roleId,jdbcType=BIGINT}
+    </select>
+    <select id="selectCountRoleByRoleName" parameterType="java.lang.String" resultType="int">
+        select count(1)
+        from base_role
+        where ROLE_NAME = #{roleName,jdbcType=VARCHAR}
+    </select>
+    <select id="selectRole" parameterType="com.cmcc.model.user.Role" resultMap="BaseResultMap">
+        select
+        <include refid="Base_Column_List"/>
+        from base_role
+        <where>
+            <if test="roleId != null">
+                and ROLE_ID = #{roleId}
+            </if>
+            <if test="roleName != null and roleName != ''">
+                and ROLE_NAME = #{roleName}
+            </if>
+            <if test="companyId != null">
+                and COMPANY_ID = #{companyId}
+            </if>
+            <if test="remark != null and remark != ''">
+                and REMARK = #{remark}
+            </if>
+            <if test="createTime != null">
+                and CREATE_TIME = #{createTime}
+            </if>
+            <if test="creator != null">
+                and CREATOR = #{creator}
+            </if>
+            <if test="modifyTime != null">
+                and MODIFY_TIME = #{modifyTime}
+            </if>
+            <if test="modifier != null">
+                and MODIFIER = #{modifier}
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                and DELETE_FLAG = #{deleteFlag}
+            </if>
+            <if test="isManager != null and isManager != ''">
+                and IS_MANAGER = #{isManager}
+            </if>
+        </where>
+    </select>
+    <delete id="deleteByPrimaryKey" >
+    delete from base_role
+    where ROLE_ID = #{roleId,jdbcType=BIGINT}
+  </delete>
+    <insert id="insert" keyColumn="ROLE_ID" keyProperty="roleId" parameterType="com.cmcc.model.user.Role"
+            useGeneratedKeys="true">
+    insert into base_role (ROLE_NAME, COMPANY_ID, REMARK,
+      CREATE_TIME, CREATOR, MODIFY_TIME,
+      MODIFIER, DELETE_FLAG,IS_MANAGER)
+    values (#{roleName,jdbcType=VARCHAR}, #{companyId,jdbcType=BIGINT}, #{remark,jdbcType=VARCHAR},
+      #{createTime,jdbcType=TIMESTAMP}, #{creator,jdbcType=BIGINT}, #{modifyTime,jdbcType=TIMESTAMP},
+      #{modifier,jdbcType=BIGINT}, #{deleteFlag,jdbcType=VARCHAR},#{isManager,jdbcType=VARCHAR})
+  </insert>
+    <insert id="insertSelective" keyColumn="ROLE_ID" keyProperty="roleId" parameterType="com.cmcc.model.user.Role"
+            useGeneratedKeys="true">
+        insert into base_role
+        <trim prefix="(" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                ROLE_ID,
+            </if>
+            <if test="roleName != null and roleName != ''">
+                ROLE_NAME,
+            </if>
+            <if test="companyId != null">
+                COMPANY_ID,
+            </if>
+            <if test="remark != null and remark != ''">
+                REMARK,
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME,
+            </if>
+            <if test="creator != null">
+                CREATOR,
+            </if>
+            <if test="modifyTime != null">
+                MODIFY_TIME,
+            </if>
+            <if test="modifier != null">
+                MODIFIER,
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                DELETE_FLAG,
+            </if>
+            <if test="isManager != null and isManager != ''">
+                IS_MANAGER,
+            </if>
+        </trim>
+        <trim prefix="values (" suffix=")" suffixOverrides=",">
+            <if test="roleId != null">
+                #{roleId},
+            </if>
+            <if test="roleName != null and roleName != ''">
+                #{roleName},
+            </if>
+            <if test="companyId != null">
+                #{companyId},
+            </if>
+            <if test="remark != null and remark != ''">
+                #{remark},
+            </if>
+            <if test="createTime != null">
+                #{createTime},
+            </if>
+            <if test="creator != null">
+                #{creator},
+            </if>
+            <if test="modifyTime != null">
+                #{modifyTime},
+            </if>
+            <if test="modifier != null">
+                #{modifier},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                #{deleteFlag},
+            </if>
+            <if test="isManager != null and isManager != ''">
+                #{isManager},
+            </if>
+        </trim>
+    </insert>
+    <update id="updateByPrimaryKeySelective" parameterType="com.cmcc.model.user.Role">
+        update base_role
+        <set>
+            <if test="roleName != null and roleName != ''">
+                ROLE_NAME = #{roleName},
+            </if>
+            <if test="companyId != null">
+                COMPANY_ID = #{companyId},
+            </if>
+            <if test="remark != null and remark != ''">
+                REMARK = #{remark},
+            </if>
+            <if test="createTime != null">
+                CREATE_TIME = #{createTime},
+            </if>
+            <if test="creator != null">
+                CREATOR = #{creator},
+            </if>
+            <if test="modifyTime != null">
+                MODIFY_TIME = #{modifyTime},
+            </if>
+            <if test="modifier != null">
+                MODIFIER = #{modifier},
+            </if>
+            <if test="deleteFlag != null and deleteFlag != ''">
+                DELETE_FLAG = #{deleteFlag},
+            </if>
+            <if test="isManager != null and isManager != ''">
+                IS_MANAGER = #{isManager}
+            </if>
+        </set>
+        where ROLE_ID = #{roleId,jdbcType=BIGINT}
+    </update>
+    <update id="updateByPrimaryKey" parameterType="com.cmcc.model.user.Role">
+    update base_role
+    set ROLE_NAME = #{roleName,jdbcType=VARCHAR},
+      COMPANY_ID = #{companyId,jdbcType=BIGINT},
+      REMARK = #{remark,jdbcType=VARCHAR},
+      CREATE_TIME = #{createTime,jdbcType=TIMESTAMP},
+      CREATOR = #{creator,jdbcType=BIGINT},
+      MODIFY_TIME = #{modifyTime,jdbcType=TIMESTAMP},
+      MODIFIER = #{modifier,jdbcType=BIGINT},
+      DELETE_FLAG = #{deleteFlag,jdbcType=VARCHAR},
+      IS_MANAGER = #{isManager,jdbcType=VARCHAR}
+    where ROLE_ID = #{roleId,jdbcType=BIGINT}
+  </update>
+</mapper>
